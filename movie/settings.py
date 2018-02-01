@@ -27,7 +27,7 @@ SECRET_KEY = '7_%)x@e-vpzpdai(q3rvt_jgn*#=f9#&ue)*d^o_qvn2c^ux0-'
 DEBUG = False
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', "movie-detail.herokuapp.com"]
 
 
 # Application definition
