@@ -1,6 +1,5 @@
 {% load staticfiles %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" rel="stylesheet"/>
 <div class="movie-data">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -21,7 +20,8 @@
             <p class="bs-component">
                 <select class="form-control" name="genre" id="genrelist" multiple>
                     {% for gen in genre %}
-                        <option value="{{ gen.id }}" {% if gen.id in selected_genre %} selected{% endif %}>{{ gen.name }}</option>
+                        <option value="{{ gen.id }}" {% if gen.id in selected_genre %}
+                                selected{% endif %}>{{ gen.name }}</option>
                     {% endfor %}
                 </select>
             </p>

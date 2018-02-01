@@ -1,6 +1,5 @@
-{% load staticfiles %}
-
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
 <head>
     <meta charset="utf-8">
@@ -9,7 +8,33 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style type="text/css">
+        body {
+            color: #666666;
+        }
+
+        #search-button {
+            display: inline-block;
+            padding: 8px 28px;
+            border-radius: 50px;
+            transition: 0.5s;
+            margin: 10px;
+            border: 2px solid #fff;
+        }
+
+        #search-button:hover {
+            color: #1dc8cd;
+            background: #fff;
+        }
+
+        #footer {
+            background: #fff;
+            box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+            padding: 30px 0;
+            color: #333;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -55,15 +80,15 @@
 {% block content %}
 {% endblock %}
 <footer id="footer">
-        <div class="container">
-            <div class="row">
-                <div class="text-lg-left text-center">
-                    &copy; Home Made By<strong><a href="https://pssukhwani.pythonanywhere.com/home" target="_blank">
-                    Me.</a></strong>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="text-lg-left text-center">
+                &copy; Home Made By<strong><a href="https://pssukhwani.pythonanywhere.com/home" target="_blank">
+                Me.</a></strong>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 {% block javascript %}
 {% endblock %}
 </body>

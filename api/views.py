@@ -20,13 +20,15 @@ class MovieSearch(APIView):
         if request_params.get("search"):
             search_field = request_params.get("search")
             search_field = search_field.title()
-            show_details = MovieDetail.objects.filter(Q(director__icontains=search_field) | Q(name__icontains=search_field) |
-                                                      Q(genre__name__in=[search_field])).distinct()
+            show_details = MovieDetail.objects.filter(
+                Q(director__icontains=search_field) | Q(name__icontains=search_field) |
+                Q(genre__name__in=[search_field])).distinct()
             if show_details:
                 data["show_details"] = serializers.serialize("json", show_details)
                 genre_data = {}
                 for movie_obj in show_details:
-                    genre_data.update({movie_obj.id: ", ".join([genre_obj.name for genre_obj in movie_obj.genre.all()])})
+                    genre_data.update(
+                        {movie_obj.id: ", ".join([genre_obj.name for genre_obj in movie_obj.genre.all()])})
                 data["genre"] = genre_data
                 data["success"] = True
             else:
@@ -55,7 +57,8 @@ class UserMovieSearch(APIView):
                 data["show_details"] = serializers.serialize("json", show_details)
                 genre_data = {}
                 for movie_obj in show_details:
-                    genre_data.update({movie_obj.id: ", ".join([genre_obj.name for genre_obj in movie_obj.genre.all()])})
+                    genre_data.update(
+                        {movie_obj.id: ", ".join([genre_obj.name for genre_obj in movie_obj.genre.all()])})
                 data["genre"] = genre_data
                 data["success"] = True
             else:
