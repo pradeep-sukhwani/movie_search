@@ -100,7 +100,7 @@ class SaveMovie(APIView):
             except:
                 pass
         data["success"] = True
-        return JsonResponse(data)
+        return Response(data)
 
 
 class DeleteMovie(APIView):
@@ -115,4 +115,4 @@ class DeleteMovie(APIView):
         except:
             data["success"] = False
             data["message"] = "That movie detail does not exist please refresh the page"
-        return JsonResponse(data)
+        return Response(data)

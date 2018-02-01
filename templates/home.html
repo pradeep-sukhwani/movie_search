@@ -5,64 +5,74 @@
 {% block content %}
     <div class="container">
         {% if user.is_authenticated %}
-            <div class="row">
-                <div class="panel-default">
-                    <div class="panel-heading">
-                        <h3>Search Movie</h3>
-                    </div>
-                    <div class="jumbotron">
-                        <form id="searchform" class="form-group" action="{% url 'api:user-movie-search' %}"
-                              method="GET">
-                            <input class="form-control" type="text" name="search"
-                                   placeholder="Search Movies by Name, Director or Genre..." required>
-                            <button type="submit" class="custom-button">Search</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="panel-default">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="panel-heading">
-                                    <h3>Your Current Movies</h3>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <a class="button pull-right custom-button"
-                                   href="{% url 'dashboard:add-update-movie-details' %}"
-                                   data-toggle="modal" data-target="#myModal">Add New Movie</a>
-                            </div>
+            {% if movie_data %}
+                <div class="row">
+                    <div class="panel-default">
+                        <div class="panel-heading">
+                            <h3>Search Movie</h3>
                         </div>
-                    </div>
-                    <div class="jumbotron">
-                        <div id="result">
-                            {% for data in movie_data %}
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        Name: {{ data.name }} <br> Director: {{ data.director }} <br> Genre:
-                                        {% for gen in data.genre.all %}
-                                            {{ gen.name }}{% if not forloop.last %},{% else %}{% endif %}{% endfor %}
-                                        <br> Popularity: {{ data.popularity }} <br> IMDB score: {{ data.score }} <br>
-                                        <br>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a class="button custom-button"
-                                           href="{% url 'dashboard:add-update-movie-details' %}?id={{ data.id }}"
-                                           data-toggle="modal" data-target="#myModal">Edit</a>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a class="button custom-button"
-                                           href="{% url 'dashboard:delete-movie-id' %}?id={{ data.id }}"
-                                           data-toggle="modal" data-target="#myModal">Delete</a>
-                                    </div>
-                                </div>
-                            {% endfor %}
+                        <div class="jumbotron">
+                            <form id="searchform" class="form-group" action="{% url 'api:user-movie-search' %}"
+                                  method="GET">
+                                <input class="form-control" type="text" name="search"
+                                       placeholder="Search Movies by Name, Director or Genre..." required>
+                                <button type="submit" class="custom-button">Search</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="panel-heading">
+                                        <h3>Your Current Movies</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <a class="button pull-right custom-button"
+                                       href="{% url 'dashboard:add-update-movie-details' %}"
+                                       data-toggle="modal" data-target="#myModal">Add New Movie</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jumbotron">
+                            <div id="result">
+                                {% for data in movie_data %}
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            Name: {{ data.name }} <br> Director: {{ data.director }} <br> Genre:
+                                            {% for gen in data.genre.all %}
+                                                {{ gen.name }}{% if not forloop.last %},{% else %}{% endif %}{% endfor %}
+                                            <br> Popularity: {{ data.popularity }} <br> IMDB score: {{ data.score }} <br>
+                                            <br>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a class="button custom-button"
+                                               href="{% url 'dashboard:add-update-movie-details' %}?id={{ data.id }}"
+                                               data-toggle="modal" data-target="#myModal">Edit</a>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <a class="button custom-button"
+                                               href="{% url 'dashboard:delete-movie-id' %}?id={{ data.id }}"
+                                               data-toggle="modal" data-target="#myModal">Delete</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="jumbotron">
+                        <p>Please add new movie details <a
+                                       href="{% url 'dashboard:add-update-movie-details' %}"
+                                       data-toggle="modal" data-target="#myModal">here</a></p>
+                    </div>
+                </div>
+            {% endif %}
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content"></div>
