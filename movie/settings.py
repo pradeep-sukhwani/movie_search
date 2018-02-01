@@ -131,7 +131,7 @@ USE_TZ = True
 SHELL = "ipython"
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # STATIC_ROOT = '/home/family/'
 
 STATICFILES_DIRS = ["static"]
