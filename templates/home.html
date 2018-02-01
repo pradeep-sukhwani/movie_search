@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container">
+        {% if user.is_authenticated %}
+            <div class="row">
+                <div class="panel-default">
+                    <div class="panel-heading">
+                        <h3>Search Movie</h3>
+                    </div>
+                    <div class="jumbotron">
+                        <form id="searchform" class="form-group" action="{% url 'api:user-movie-search' %}"
+                              method="GET">
+                            <input class="form-control" type="text" name="search"
+                                   placeholder="Search Movies by Name, Director or Genre..." required>
+                            <button type="submit" id="search-button">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel-heading">
+                                    <h3>Your Current Movies</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <a class="button pull-right"
+                                   href="{% url 'dashboard:get-existing-movie-id' %}"
+                                   id="search-button" data-toggle="modal" data-target="#myModal">Add New Movie</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="jumbotron">
+                        <div id="result">
+                            {% for data in movie_data %}
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        Name: {{ data.name }} <br> Director: {{ data.director }} <br> Genre:
+                                        {% for gen in data.genre.all %}
+                                            {{ gen.name }}{% if not forloop.last %},{% else %}{% endif %}{% endfor %}
+                                        <br> Popularity: {{ data.popularity }} <br> IMDB score: {{ data.score }} <br>
+                                        <br>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a class="button"
+                                           href="{% url 'dashboard:get-existing-movie-id' %}?id={{ data.id }}"
+                                           id="search-button" data-toggle="modal" data-target="#myModal">Edit</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content"></div>
+                </div>
+            </div>
+        {% else %}
+            <div class="jumbotron">
+                <p>You need to login to see this page. Please login <a href="{% url 'login' %}">here</a></p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        {#$(".button").on('click', function () {#}
+        {#    var currentRow = $(this).closest(".row").closest(".container").find(".myModal").find(".modal-dialog").find(".modal-content");#}
+        {#    var url = $(this).attr("href");#}
+        {#    $.ajax({#}
+        {#        url: url,#}
+        {#        type: "GET",#}
+        {#        success: function (response) {#}
+        {#            debugger;#}
+        {#            currentRow.html($(".movie-data"));#}
+        {#        },#}
+        {#        error: function () {#}
+        {#            alert("Something Went wrong");#}
+        {#        }#}
+        {#    });#}
+        {#    return false;#}
+        {#{);#}
+
+        $("#searchform").on("submit", function () {
+            var form = $(this);
+            var url = form.attr('action') + "?search=" + form.find("input[type=text]").val();
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    if (response.success) {
+                        $("#result").empty();
+                        var jsonData = JSON.parse(response["show_details"]);
+                        for (var key in jsonData) {
+                            $("#result").append("Name: " + jsonData[key]["fields"]["name"] + "<br>Director: " +
+                                jsonData[key]["fields"]["director"] + "<br>Genre: " + response["genre"][jsonData[key]["pk"]] + "<br>Popularity: " +
+                                jsonData[key]["fields"]["popularity"] + "<br>IMDB Score: " +
+                                jsonData[key]["fields"]["score"] + "<br><br>");
+                        }
+                    } else {
+                        $("#result").html(response["message"]);
+                    }
+                },
+                error: function () {
+                    alert("Something Went wrong");
+                }
+            });
+            return false;
+        });
+    </script>
+{% endblock %}

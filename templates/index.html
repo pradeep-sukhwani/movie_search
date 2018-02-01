@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="panel-default">
+                <div class="panel-heading">
+                    <h3>Search Movie</h3>
+                </div>
+                <div class="jumbotron">
+                    <form id="searchform" class="form-group" action="{% url 'api:movie-search' %}" method="GET">
+                        <input class="form-control" type="text" name="search" placeholder="Search Movies by Name, Director or Genre..." required>
+                        <button type="submit" id="search-button">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="panel-default">
+                <div class="panel-heading">
+                    <h3>Top 10 Movies</h3>
+                </div>
+                <div class="jumbotron">
+                    <div id="result">
+                        {% for data in movie_data %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    Name: {{ data.name }} <br> Director: {{ data.director }} <br> Genre:
+                                    {% for gen in data.genre.all %}
+                                        {{ gen.name }}{% if not forloop.last %},{% else %}{% endif %}{% endfor %}
+                                    <br> Popularity: {{ data.popularity }} <br> IMDB score: {{ data.score }} <br> <br>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script>
+        $("#searchform").on("submit", function () {
+            var form = $(this);
+            var url = form.attr('action') + "?search=" + form.find("input[type=text]").val();
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    if (response.success) {
+                        $("#result").empty();
+                        var jsonData = JSON.parse(response["show_details"]);
+                        for (var key in jsonData) {
+                            $("#result").append("Name: " + jsonData[key]["fields"]["name"] + "<br>Director: " +
+                                jsonData[key]["fields"]["director"] + "<br>Genre: " + response["genre"][jsonData[key]["pk"]] + "<br>Popularity: " +
+                                jsonData[key]["fields"]["popularity"] + "<br>IMDB Score: " +
+                                jsonData[key]["fields"]["score"] + "<br><br>");
+                        }
+                    } else {
+                        $("#result").html(response["message"]);
+                    }
+                },
+                error: function () {
+                    alert("Something Went wrong");
+                }
+            });
+            return false;
+        });
+    </script>
+{% endblock %}

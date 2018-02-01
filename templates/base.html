@@ -1,0 +1,70 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Database</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'dashboard:index' %}">Movie Database</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        {% if user.is_authenticated %}
+                            <li>Hello, {{ request.user.username }}</li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{% url 'dashboard:home-page' %}">Your Movies</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}">Logout</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'login' %}">Login</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+<footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="text-lg-left text-center">
+                    &copy; Home Made By<strong><a href="https://pssukhwani.pythonanywhere.com/home" target="_blank">
+                    Me.</a></strong>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% block javascript %}
+{% endblock %}
+</body>
+</html>
