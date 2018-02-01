@@ -15,7 +15,7 @@
                               method="GET">
                             <input class="form-control" type="text" name="search"
                                    placeholder="Search Movies by Name, Director or Genre..." required>
-                            <button type="submit" id="search-button">Search</button>
+                            <button type="submit" class="custom-button">Search</button>
                         </form>
                     </div>
                 </div>
@@ -30,9 +30,9 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <a class="button pull-right"
-                                   href="{% url 'dashboard:get-existing-movie-id' %}"
-                                   id="search-button" data-toggle="modal" data-target="#myModal">Add New Movie</a>
+                                <a class="button pull-right custom-button"
+                                   href="{% url 'dashboard:add-update-movie-details' %}"
+                                   data-toggle="modal" data-target="#myModal">Add New Movie</a>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                         <div id="result">
                             {% for data in movie_data %}
                                 <div class="row">
-                                    <div class="col-md-10">
+                                    <div class="col-md-8">
                                         Name: {{ data.name }} <br> Director: {{ data.director }} <br> Genre:
                                         {% for gen in data.genre.all %}
                                             {{ gen.name }}{% if not forloop.last %},{% else %}{% endif %}{% endfor %}
@@ -48,9 +48,14 @@
                                         <br>
                                     </div>
                                     <div class="col-md-2">
-                                        <a class="button"
-                                           href="{% url 'dashboard:get-existing-movie-id' %}?id={{ data.id }}"
-                                           id="search-button" data-toggle="modal" data-target="#myModal">Edit</a>
+                                        <a class="button custom-button"
+                                           href="{% url 'dashboard:add-update-movie-details' %}?id={{ data.id }}"
+                                           data-toggle="modal" data-target="#myModal">Edit</a>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a class="button custom-button"
+                                           href="{% url 'dashboard:delete-movie-id' %}?id={{ data.id }}"
+                                           data-toggle="modal" data-target="#myModal">Delete</a>
                                     </div>
                                 </div>
                             {% endfor %}

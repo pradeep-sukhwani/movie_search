@@ -1,8 +1,10 @@
+import os
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render
 from core.models import MovieDetail, Genre
 import json
+from movie.settings import BASE_DIR
 
 
 def index(request):
@@ -14,7 +16,7 @@ def index(request):
 
 def import_json_data():
     # import script to import movie details from json
-    with open("/home/family/movie/imdb.json") as data:  # edit file url as per your json file location
+    with open(os.path.join(BASE_DIR, "imdb.json")) as data:  # edit file url as per your json file location
         json_data = json.loads(data.read())
         for count, item in enumerate(json_data):
             if item.get("name"):
@@ -47,7 +49,7 @@ def home_page(request):
     return render(request, "home.html", data)
 
 
-def get_existing_movie_id(request):
+def add_update_movie_details_modal(request):
     # opening modal to add new or edit existing movie details of that particular user
     data = {"data_id": False}
     if request.GET.get("id"):
@@ -57,3 +59,8 @@ def get_existing_movie_id(request):
         data["data_id"] = True
     data["genre"] = Genre.objects.all()
     return render(request, "movie_modal.html", data)
+
+
+def delete_movie_id(request):
+    # opening modal to delete movie details of that particular user
+    return render(request, "delete_movie_modal.html", {"movie_data": MovieDetail.objects.get(id=request.GET.get("id"))})

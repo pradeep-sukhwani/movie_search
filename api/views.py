@@ -100,3 +100,18 @@ class SaveMovie(APIView):
                 pass
         data["success"] = True
         return Response(data)
+
+
+class DeleteMovie(APIView):
+    # Delete movie details for a specific user
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        data = {}
+        try:
+            MovieDetail.objects.get(id=int(request.POST.get("movie_id")), user__username=request.user.username).delete()
+            data["success"] = True
+        except:
+            data["success"] = False
+            data["message"] = "That movie detail does not exist please refresh the page"
+        return Response(data)

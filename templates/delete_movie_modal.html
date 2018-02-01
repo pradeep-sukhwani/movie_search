@@ -1,0 +1,48 @@
+{% load staticfiles %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" rel="stylesheet"/>
+<div class="movie-data">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Delete Movie Details</h4>
+    </div>
+
+    <div class="modal-body">
+        <form method="POST" action="{% url 'api:movie-delete' %}" id="DeleteMovieForm">
+            {% csrf_token %}
+            <p class="bs-component">
+                <input class="form-control" type="hidden" name="movie_id" value="{{ movie_data.id }}">
+            </p>
+            <strong>Are you sure want to delete this Movie Detail?</strong>
+            <div id="error" style="color: red;"></div>
+            <div id="success" style="color: green;"></div>
+            <div class="modal-footer">
+                <button type="submit" class="custom-button">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+    $("#DeleteMovieForm").on("submit", function () {
+        var form = $(this);
+        var url = form.attr('action');
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: form.serialize(),
+            success: function (response) {
+                if (response.success) {
+                    form.find("#success").html("Successfully deleted movie details");
+                    location.reload();
+                } else {
+                    form.find("#error").html(response["message"]);
+                }
+            },
+            error: function () {
+                alert("Something Went wrong");
+            }
+        });
+        return false;
+    })
+</script>
