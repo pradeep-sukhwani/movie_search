@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -37,7 +38,7 @@ class MovieSearch(APIView):
         else:
             data["success"] = False
             data["message"] = "Please write something!!"
-        return Response(data)
+        return JsonResponse(data)
 
 
 class UserMovieSearch(APIView):
@@ -67,7 +68,7 @@ class UserMovieSearch(APIView):
         else:
             data["success"] = False
             data["message"] = "Please write something!!"
-        return Response(data)
+        return JsonResponse(data)
 
 
 class SaveMovie(APIView):
@@ -99,7 +100,7 @@ class SaveMovie(APIView):
             except:
                 pass
         data["success"] = True
-        return Response(data)
+        return JsonResponse(data)
 
 
 class DeleteMovie(APIView):
@@ -114,4 +115,4 @@ class DeleteMovie(APIView):
         except:
             data["success"] = False
             data["message"] = "That movie detail does not exist please refresh the page"
-        return Response(data)
+        return JsonResponse(data)
