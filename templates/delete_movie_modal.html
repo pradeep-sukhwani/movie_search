@@ -35,6 +35,7 @@
                 if (response.success) {
                     form.find("#success").html("Successfully deleted movie details");
                     location.reload();
+                    form.remove();
                 } else {
                     form.find("#error").html(response["message"]);
                 }
