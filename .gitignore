@@ -2,3 +2,4 @@
 local_settings.py
 *__pycache__/
 *.idea/
+collect_static/
